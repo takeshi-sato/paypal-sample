@@ -40,18 +40,30 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.xml
   def create
-    @order = Order.new(params[:order])
-
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to(@order, :notice => 'Order was successfully created.') }
-        format.xml  { render :xml => @order, :status => :created, :location => @order }
+    @order = current_cart.build_order(params[:order])
+    @order.ip_address = request.remote_ip
+    if @order.save
+      if @order.purchase
+        render :action => "success"
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @order.errors, :status => :unprocessable_entity }
+        render :action => "failure"
       end
+    else
+      render :action => 'new'
     end
   end
+
+
+
+
+
+
+
+
+
+
+
+
 
   # PUT /orders/1
   # PUT /orders/1.xml
