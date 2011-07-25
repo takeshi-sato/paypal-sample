@@ -22,5 +22,15 @@ PaypalSample::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-end
 
+  # Paypal Code
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+    ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(
+      :login => "asl_1311579240_biz_api1.netyear.net",
+      :password => "1311579274",
+      :signature => "Ac4RUZgDRrsIKeKS6kWIDJ7KyRbyAraYVN3k3Wy3ehRZJXVgs7W8g0-3"
+    )
+  end
+
+end
